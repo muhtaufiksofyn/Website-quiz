@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login dan Quiz</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #000000, #8B0000);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: auto;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8), 0 0 30px #8B0000 inset;
+            text-align: center;
+        }
+
+        h2 {
+            color: #FF4500;
+            font-size: 30px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            color: #FF4500;
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-group input, .form-group button {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #8B0000;
+            border-radius: 8px;
+            background: rgba(255, 0, 0, 0.2);
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .form-group input:focus, .form-group button:hover {
+            outline: none;
+            background: rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px #FF0000;
+        }
+
+        .form-group button {
+            background: #8B0000;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group button:hover {
+            background: #FF0000;
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.8);
+        }
+
+        .question {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .answers {
+            margin-top: 10px;
+        }
+
+        .answers label {
+            display: block;
+            padding: 10px;
+            background: rgba(255, 0, 0, 0.3);
+            border-radius: 5px;
+            margin: 5px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .answers input {
+            margin-right: 10px;
+        }
+
+        .switch a {
+            color: #FF4500;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            margin-top: 20px;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.8), 0 -5px 15px #8B0000 inset;
+            color: #fff;
+            margin-top: auto;
+        }
+
+        footer span {
+            color: #FF4500;
+            font-weight: bold;
+        }
+
+        .seram-text {
+            font-size: 2em;
+            color: #FF6347;
+            animation: blood-red 1s infinite alternate;
+        }
+
+        @keyframes blood-red {
+            0% {
+                color: #FF0000;
+            }
+            100% {
+                color: #8B0000;
+                text-shadow: 0 0 20px #FF6347, 0 0 30px #FF4500;
+            }
+        }
+
+        .seram-button {
+            background: #8B0000;
+            border: 1px solid #FF0000;
+            color: #fff;
+            font-size: 18px;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .seram-button:hover {
+            background: #FF0000;
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .seram-button:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .form-group input, .form-group button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio latar belakang -->
+<audio loop id="background-audio">
+      <source src="assets/background-music.mp3?version=1" type="audio/mp3">
+
+        Browser Anda tidak mendukung tag audio.
+    </audio>
+
+    <div class="content">
+        <!-- Form Login -->
+        <div class="container" id="login-container">
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Masukkan Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan Password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <div class="switch">
+                <a href="#" onclick="switchForm('register')">Belum punya akun? Registrasi</a>
+            </div>
+        </div>
+
+        <!-- Form Registrasi -->
+        <div class="container" id="register-container" style="display: none;">
+            <h2>Registrasi</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input type="text" id="name" placeholder="Masukkan Nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" placeholder="Masukkan Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" placeholder="Masukkan Password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Registrasi</button>
+                </div>
+            </form>
+            <div class="switch">
+                <a href="#" onclick="switchForm('login')">Sudah punya akun? Login</a>
+            </div>
+        </div>
+
+        <!-- Form Quiz -->
+        <div class="container" id="quiz-container" style="display: none;">
+            <h2>Quiz Online</h2>
+            <div id="questions"></div>
+            <button class="seram-button" onclick="nextQuestion()">Soal Selanjutnya</button>
+            <button class="seram-button" onclick="reloadQuiz()">Mulai Lagi</button>
+        </div>
+
+        <!-- Form Score -->
+        <div class="container" id="score-container" style="display: none;">
+            <h2 class="seram-text">Skor Anda</h2>
+            <p id="score-display" class="seram-text"></p>
+            <button class="seram-button" onclick="reloadQuiz()">Coba Lagi</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Form ini dibuat oleh <span>Muh. Taufik</span> dari Universitas Dipa Makassar jurusan Informatika</p>
+    </footer>
+
+    <script>
+        const questionsData = [
+            { question: "Siapa tokoh utama filsafat Yunani?", answers: ["Socrates", "Plato", "Aristoteles", "Descartes", "Nietzsche"], correct: 0 },
+            { question: "Filsafat membahas tentang...", answers: ["Alam", "Manusia", "Pemikiran mendalam", "Teknologi", "Sains"], correct: 2 },
+            { question: "Tes psikotes umumnya digunakan untuk...", answers: ["Menilai fisik", "Menilai emosi", "Menilai kemampuan kognitif", "Menilai keuangan", "Menilai kepribadian"], correct: 2 },
+            { question: "Turunan dari x^2 adalah...", answers: ["x", "2x", "x^3", "2x^2", "4x"], correct: 1 },
+            { question: "Lambang negara Indonesia adalah...", answers: ["Garuda Pancasila", "Singa Merah", "Burung Elang", "Harimau", "Raja Kadal"], correct: 0 },
+            { question: "Hari raya umat Muslim adalah...", answers: ["Natal", "Nyepi", "Idul Fitri", "Waisak", "Imlek"], correct: 2 },
+            { question: "Ilmu sosial mempelajari...", answers: ["Alam", "Manusia", "Hewan", "Benda mati", "Bumi"], correct: 1 },
+            { question: "Air membeku pada suhu...", answers: ["0°C", "10°C", "50°C", "100°C", "-10°C"], correct: 0 },
+            { question: "Bahasa pemrograman untuk web adalah...", answers: ["Python", "HTML", "C++", "SQL", "Ruby"], correct: 1 },
+            { question: "Gunung tertinggi di dunia adalah...", answers: ["K2", "Himalaya", "Everest", "Fuji", "Mont Blanc"], correct: 2 }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function shuffleQuestions() {
+            return questionsData.sort(() => Math.random() - 0.5).slice(0, 5);
+        }
+
+        function loadQuiz() {
+            const quizContainer = document.getElementById("questions");
+            quizContainer.innerHTML = "";
+            const questions = shuffleQuestions();
+            const q = questions[currentQuestionIndex];
+            const questionDiv = document.createElement("div");
+            questionDiv.classList.add("question");
+            questionDiv.innerHTML = `
+                <h3>${currentQuestionIndex + 1}. ${q.question}</h3>
+                <div class="answers">
+                    ${q.answers.map((answer, i) => `
+                        <label><input type="radio" name="q${currentQuestionIndex}" value="${i}"> ${String.fromCharCode(65 + i)}. ${answer}</label>
+                    `).join('')}
+                </div>
+            `;
+            quizContainer.appendChild(questionDiv);
+        }
+
+        function nextQuestion() {
+            const answers = document.querySelectorAll("input[type='radio']:checked");
+            if (answers.length > 0) {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < 5) {
+                    loadQuiz();
+                } else {
+                    submitQuiz();
+                }
+            } else {
+                alert("Pilih jawaban terlebih dahulu.");
+            }
+        }
+
+        function submitQuiz() {
+            const answers = document.querySelectorAll("input[type='radio']:checked");
+            const score = Array.from(answers).reduce((acc, answer, index) => {
+                const question = questionsData[index];
+                return acc + (parseInt(answer.value) === question.correct ? 1 : 0);
+            }, 0);
+            
+            let message = '';
+            if (score < 3) {
+                message = "Nilai Anda rendah. Silakan belajar lagi.";
+            } else if (score === 3 || score === 4) {
+                message = "Nilai Anda bagus! Teruskan belajar dan pertahankan!";
+            } else {
+                message = "Anda telah menguasai materi! Luar biasa!";
+            }
+
+            document.getElementById("quiz-container").style.display = "none";
+            document.getElementById("score-container").style.display = "block";
+            document.getElementById("score-display").textContent = `Skor Anda: ${score}/5. ${message}`;
+        }
+
+        function reloadQuiz() {
+            currentQuestionIndex = 0;
+            loadQuiz();
+            document.getElementById("quiz-container").style.display = "block";
+            document.getElementById("score-container").style.display = "none";
+        }
+
+        function switchForm(form) {
+            if (form === 'register') {
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("register-container").style.display = "block";
+            } else {
+                document.getElementById("login-container").style.display = "block";
+                document.getElementById("register-container").style.display = "none";
+            }
+        }
+
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            loadQuiz();
+        });
+
+        document.getElementById("register-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Registrasi berhasil!");
+            switchForm('login');
+        });
+    </script>
+
+</body>
+</html>
